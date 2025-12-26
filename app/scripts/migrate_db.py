@@ -1,0 +1,12 @@
+# app/scripts/migrate_db.py
+from app.storage.db import load_config, make_conn, migrate
+
+def main():
+    cfg = load_config("app/config/local.yaml")
+    conn = make_conn(cfg)
+    migrate(conn)
+    conn.close()
+    print("DB migrate OK")
+
+if __name__ == "__main__":
+    main()

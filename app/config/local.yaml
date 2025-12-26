@@ -1,0 +1,12 @@
+database:
+  host: 127.0.0.1
+  port: 5432
+  user: postgres
+  password: postgres
+  database: quant
+
+data:
+  symbol: BTC-USDT-SWAP
+  timeframe: 1m
+  bar: 1m
+  limit: 100

@@ -1,0 +1,9 @@
+﻿venv/
+__pycache__/
+*.pyc
+*.pyo
+*.log
+logs/
+.runner_lock/
+.DS_Store
+.env

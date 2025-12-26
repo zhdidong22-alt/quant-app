@@ -1,0 +1,4 @@
+﻿pyyaml
+requests
+psycopg2-binary
+python-dotenv
