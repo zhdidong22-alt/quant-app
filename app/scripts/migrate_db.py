@@ -5,6 +5,9 @@ def main():
     cfg = load_config("app/config/local.yaml")
     conn = make_conn(cfg)
     migrate(conn)
+    cfg = load_config()
+    conn = make_conn(cfg)
+    migrate()
     conn.close()
     print("DB migrate OK")
 

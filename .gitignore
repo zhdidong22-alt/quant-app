@@ -1,9 +1,19 @@
-﻿venv/
+﻿# Python
 __pycache__/
-*.pyc
-*.pyo
-*.log
+*.py[cod]
+
+# Virtual environment
+venv/
+
+# Logs
 logs/
-.runner_lock/
+*.log
+
+# Local config (DO NOT COMMIT)
+app/config/local.yaml
+
+# OS / IDE
 .DS_Store
-.env
+Thumbs.db
+.vscode/
+.idea/
