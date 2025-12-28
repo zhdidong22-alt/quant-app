@@ -7,6 +7,6 @@ database:
 
 data:
   symbol: BTC-USDT-SWAP
-  timeframe: 1m
-  bar: 1m
+  timeframe: 1h
+  bar: 1h
   limit: 100
