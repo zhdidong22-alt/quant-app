@@ -9,4 +9,4 @@ data:
   symbol: BTC-USDT-SWAP
   timeframe: 1h
   bar: 1h
-  limit: 100
+  limit: 3600

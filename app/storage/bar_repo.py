@@ -1,5 +1,8 @@
-﻿from psycopg2.extras import execute_values
+from psycopg2.extras import execute_values
+import pandas as pd
+
 from app.storage.db import load_config, make_conn
+
 
 class BarRepository:
     def __init__(self, cfg=None, source: str = "okx"):
@@ -43,3 +46,54 @@ class BarRepository:
             conn.close()
 
         return len(rows), latest_ts
+
+    def fetch_bars_df(
+        self,
+        symbol: str,
+        timeframe: str,
+        start_ts: int | None = None,
+        end_ts: int | None = None,
+        limit: int | None = None,
+        asc: bool = True,
+    ) -> pd.DataFrame:
+        """
+        Read bars from Postgres and return a DataFrame with columns:
+        ts, open, high, low, close, volume
+        ts is milliseconds (BIGINT), consistent with schema.sql.
+
+        start_ts/end_ts: inclusive bounds in ms
+        limit: optional row limit
+        asc: order by ts ascending (recommended for feature compute)
+        """
+        where = ["symbol=%s", "timeframe=%s"]
+        params: list = [symbol, timeframe]
+
+        if start_ts is not None:
+            where.append("ts >= %s")
+            params.append(int(start_ts))
+        if end_ts is not None:
+            where.append("ts <= %s")
+            params.append(int(end_ts))
+
+        order = "ASC" if asc else "DESC"
+        sql = f"""
+        SELECT ts, open, high, low, close, volume
+        FROM bars
+        WHERE {" AND ".join(where)}
+        ORDER BY ts {order}
+        """
+
+        if limit is not None:
+            sql += " LIMIT %s"
+            params.append(int(limit))
+
+        conn = make_conn(self.cfg)
+        try:
+            with conn.cursor() as cur:
+                cur.execute(sql, params)
+                rows = cur.fetchall()
+        finally:
+            conn.close()
+
+        df = pd.DataFrame(rows, columns=["ts", "open", "high", "low", "close", "volume"])
+        return df
