@@ -3,8 +3,8 @@
 from typing import List, Optional
 
 from app.common.types import Bar
-from app.market.client import OKXMarketClient
-from app.market.normalizer import OKXNormalizer
+from app.market.okx.client import OKXMarketClient
+from app.market.okx.normalizer import OKXNormalizer
 
 
 class MarketFetcher:

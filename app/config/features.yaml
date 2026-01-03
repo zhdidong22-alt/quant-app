@@ -1,0 +1,33 @@
+﻿features:
+  symbol: "BTC-USDT-SWAP"
+
+  # 你希望生成 features 的周期
+  timeframes:
+    - "1m"
+    - "1h"
+    - "4h"
+
+  # warmup：可统一，也可按周期覆盖
+  warmup:
+    default: 26
+    overrides:
+      "1m": 26
+      "1h": 26
+      "4h": 26
+
+  # 指标清单与参数
+  indicators:
+    ma:
+      windows: [5, 10, 20]
+    atr:
+      windows: [14]
+    rsi:
+      windows: [14]
+    macd:
+      fast: 12
+      slow: 26
+      signal: 9
+
+  output:
+    out_dir: "data/features"
+    format: "csv"

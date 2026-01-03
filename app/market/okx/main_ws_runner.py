@@ -1,10 +1,12 @@
 ﻿import asyncio
 import time
 
-from app.market.ws_client import OKXWSClient
+from app.market.okx.ws_client import OKXWSClient
 from app.storage.bar_repo import BarRepository
-from app.storage.db import load_config
 from app.storage.heartbeat_repo import HeartbeatRepository
+from app.storage.db import load_config, make_conn
+
+
 
 SYMBOL = "BTC-USDT-SWAP"
 TIMEFRAME = "1m"  # 存库用的 timeframe
@@ -19,17 +21,21 @@ def candle_to_row(c: dict) -> list:
     return [int(c["ts"]), float(c["open"]), float(c["high"]), float(c["low"]), float(c["close"]), float(c["volume"])]
 
 
+
+
 async def runner():
     cfg = load_config()
-    repo = BarRepository(cfg)
-    hb = HeartbeatRepository(cfg)
+    conn = make_conn(cfg)
+
+    repo = BarRepository(conn)
+    hb = HeartbeatRepository(conn, source="okx")
 
     service_name = f"main_ws_runner:{SYMBOL}:{TIMEFRAME}"
 
     state = {
-        "last_ts": None,   # 当前形成中的 candle 的 ts（分钟起始 ts）
-        "buffer": None,    # 当前形成中的 candle（不断被同 ts 更新）
-        "last_beat": 0,    # 心跳节流
+        "last_ts": None,
+        "buffer": None,
+        "last_beat": 0,
     }
 
     def beat():

@@ -3,9 +3,9 @@
 from app.storage.db import load_config, make_conn, migrate
 from app.storage.bar_repo import BarRepository
 
-from app.market.client import OKXMarketClient
-from app.market.normalizer import OKXNormalizer
-from app.market.fetcher import MarketFetcher
+from app.market.okx.client import OKXMarketClient
+from app.market.okx.normalizer import OKXNormalizer
+from app.market.okx.fetcher import MarketFetcher
 
 
 def main():
